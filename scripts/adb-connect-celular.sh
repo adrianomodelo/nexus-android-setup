@@ -6,7 +6,7 @@
 # Se falhar, verificar em: Configurações → Opções do desenvolvedor → Depuração sem fio
 
 CELULAR_IP="${1:-100.112.7.26}"
-CELULAR_PORT="${2:-36565}"
+CELULAR_PORT="${2:-44007}"
 
 echo "Conectando ao celular ($CELULAR_IP:$CELULAR_PORT)..."
 adb connect "$CELULAR_IP:$CELULAR_PORT"

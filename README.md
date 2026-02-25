@@ -61,7 +61,7 @@ adb version  # Android Debug Bridge version 1.0.41+
    - **IP do celular** (ex: `192.168.x.x` ou IP Tailscale `100.x.x.x`)
    - **Porta de emparelhamento** (ex: `33417`)
    - **Código de 6 dígitos** (ex: `518212`)
-3. A porta **principal ADB** fica visível na tela de "Depuração sem fio" (ex: `36565`)
+3. A porta **principal ADB** fica visível na tela de "Depuração sem fio" (ex: `44007`)
 
 ---
 
@@ -80,7 +80,7 @@ adb pair 100.112.7.26:33417 518212
 ```bash
 adb connect <IP_CELULAR>:<PORTA_PRINCIPAL>
 # Exemplo:
-adb connect 100.112.7.26:36565
+adb connect 100.112.7.26:44007
 ```
 
 ### 2.3 Verificar conexão
@@ -155,12 +155,16 @@ cat ~/.ssh/id_rsa.pub | adb shell "cat >> /data/data/com.termux/files/home/.ssh/
 
 ### 4.2 Conectar ao Termux via SSH
 ```bash
-ssh -p 8022 -i ~/.ssh/id_rsa 100.112.7.26
+ssh -p 8022 -i ~/.ssh/id_rsa -o IdentitiesOnly=yes u0a454@100.112.7.26
+
+# Ou via alias (~/.ssh/config):
+ssh ssh-celular
 ```
 
 - **IP Tailscale do celular:** `100.112.7.26`
 - **Porta Termux SSH:** `8022`
-- **Hostname:** `a34-de-adriano`
+- **Usuário:** `u0a454`
+- **Alias:** `ssh-celular` (configurar em `~/.ssh/config`)
 
 ### 4.3 Manter sshd automático no Termux
 ```bash
@@ -275,7 +279,7 @@ Salvar como `~/workspace/scripts/adb-connect-celular.sh`:
 #!/bin/bash
 # Reconecta ADB ao celular via Tailscale
 CELULAR_IP="100.112.7.26"
-CELULAR_PORT="36565"
+CELULAR_PORT="44007"
 
 echo "Conectando ao celular ($CELULAR_IP:$CELULAR_PORT)..."
 adb connect $CELULAR_IP:$CELULAR_PORT
@@ -287,7 +291,7 @@ echo "Dispositivos conectados:"
 adb devices
 ```
 
-> **Nota sobre a porta:** A porta principal ADB (`36565` neste setup) pode mudar a cada reboot do celular se o sistema Android a reatribuir dinamicamente. Em caso de falha, verificar a porta atual em **Configurações → Opções do desenvolvedor → Depuração sem fio**.
+> **Nota sobre a porta:** A porta principal ADB (`44007` neste setup) pode mudar a cada reboot do celular se o sistema Android a reatribuir dinamicamente. Em caso de falha, verificar a porta atual em **Configurações → Opções do desenvolvedor → Depuração sem fio**.
 
 ---
 
@@ -306,6 +310,7 @@ adb devices
 | Data | Evento |
 |---|---|
 | 2026-02-25 | Setup inicial — ADB Wireless + permissões + pipeline Watch 7 → n8n |
+| 2026-02-25 | Atualização — porta ADB `44007`, usuário SSH `u0a454`, alias `ssh-celular` |
 
 ---
 
