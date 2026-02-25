@@ -135,7 +135,53 @@ adb shell pm grant com.rafapps.taskerhealthconnect android.permission.health.REA
 
 ---
 
-## 4. SSH via Termux
+## 4. Setup Completo do Termux
+
+### 4.1 Instalar pacotes essenciais
+```bash
+# Dentro do Termux no celular (ou via SSH):
+pkg update -y && yes Y | pkg upgrade
+pkg install -y git jq python nodejs tmux vim curl wget termux-api
+```
+
+### 4.2 Configurar termux-services para sshd automático no boot
+```bash
+pkg install -y termux-services
+sv-enable sshd
+sv up sshd
+```
+
+### 4.3 Configurar ~/.bashrc
+```bash
+cat > ~/.bashrc << 'EOF'
+# === NEXUS ANDROID — Termux Config ===
+
+# sshd fallback caso services não esteja rodando
+if ! pgrep -f sshd > /dev/null 2>&1; then
+  sshd
+fi
+
+# Aliases
+alias ll="ls -lah"
+alias g="git"
+alias py="python"
+alias status-nexus="termux-battery-status && echo --- && uptime && echo --- && df -h /sdcard"
+
+export PATH="$HOME/.local/bin:$PATH"
+export EDITOR=vim
+EOF
+```
+
+### 4.4 Configurar git
+```bash
+git config --global user.name "Adriano Nexus"
+git config --global user.email "adrianomodelo@users.noreply.github.com"
+git config --global init.defaultBranch main
+```
+
+---
+
+## 5. SSH via Termux
 
 Para acesso shell completo ao celular (não só ADB):
 
@@ -174,7 +220,7 @@ sshd 2>/dev/null || true
 
 ---
 
-## 5. Automação via UI (uiautomator)
+## 6. Automação via UI (uiautomator)
 
 Para interagir com apps que não têm API — útil para clicar em botões, preencher formulários, etc.
 
@@ -195,7 +241,7 @@ adb exec-out screencap -p > /tmp/screen.png
 
 ---
 
-## 6. Pipeline de Dados de Saúde (Galaxy Watch 7 → n8n)
+## 7. Pipeline de Dados de Saúde (Galaxy Watch 7 → n8n)
 
 ### 6.1 Fluxo completo
 ```
@@ -250,7 +296,7 @@ A task **"Nexus Health Ler"** (ID 100) executa às 08:00–08:01 diariamente e:
 
 ---
 
-## 7. Bugs Conhecidos e Workarounds
+## 8. Bugs Conhecidos e Workarounds
 
 ### Android 16 + TaskerHealthConnect — `COUNT_TOTAL` Bug
 
@@ -271,7 +317,7 @@ if (sd.records) {
 
 ---
 
-## 8. Script de Reconexão Rápida
+## 9. Script de Reconexão Rápida
 
 Salvar como `~/workspace/scripts/adb-connect-celular.sh`:
 
@@ -295,7 +341,7 @@ adb devices
 
 ---
 
-## 9. Referências
+## 10. Referências
 
 - [ADB Wireless Debugging — Android Developers](https://developer.android.com/tools/adb#wireless-android11-command-line)
 - [TaskerHealthConnect — GitHub](https://github.com/RafhaanShah/TaskerHealthConnect)
@@ -311,6 +357,7 @@ adb devices
 |---|---|
 | 2026-02-25 | Setup inicial — ADB Wireless + permissões + pipeline Watch 7 → n8n |
 | 2026-02-25 | Atualização — porta ADB `44007`, usuário SSH `u0a454`, alias `ssh-celular` |
+| 2026-02-25 | Reinstalação completa — setup Termux (git, jq, python, nodejs, tmux, vim, termux-api), termux-services para sshd, fix MANAGE_EXTERNAL_STORAGE (manual no Android 16) |
 
 ---
 
