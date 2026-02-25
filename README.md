@@ -18,6 +18,9 @@ Permitir que o PC Home (ou qualquer máquina autorizada) controle o celular remo
 | Tasker | Orquestrador de automações no Android |
 | TaskerHealthConnect (plugin) | Leitura do Health Connect via Tasker |
 | Termux | Terminal Linux no Android + SSH server |
+| Termux:Boot | Auto-start de scripts no boot do Android |
+| Termux:API | Integração com recursos nativos do Android |
+| Shizuku | Permissões elevadas (ADB-level) sem root |
 | Tailscale | VPN mesh para acesso remoto seguro |
 | ADB Wireless | Controle remoto e concessão de permissões |
 | n8n (VPS Nexus) | Receptor de webhooks + processamento |
@@ -341,7 +344,89 @@ adb devices
 
 ---
 
-## 10. Referências
+## 10. Shizuku — Permissões Elevadas sem Root
+
+Shizuku permite que apps obtenham permissões equivalentes ao ADB (muito além do normal) sem necessidade de root. Essencial para automações avançadas via Tasker.
+
+### 10.1 Instalar Shizuku
+
+```bash
+# Baixar APK (GitHub releases)
+wget -O /tmp/shizuku.apk https://github.com/RikkaApps/Shizuku/releases/latest/download/shizuku-*.apk
+
+# Instalar via ADB
+adb -s 100.112.7.26:<PORTA> install -r /tmp/shizuku.apk
+```
+
+### 10.2 Iniciar servidor Shizuku
+
+```bash
+# Gerar script de start manualmente
+adb -s 100.112.7.26:<PORTA> shell '
+APK=$(pm path moe.shizuku.privileged.api | sed "s/package://")
+cat > /data/local/tmp/shizuku_start.sh << EOF
+#!/system/bin/sh
+CLASSPATH=$APK
+exec /system/bin/app_process -Djava.class.path="\$CLASSPATH" /system/bin --nice-name=shizuku moe.shizuku.server.Starter "\$@"
+EOF
+chmod 755 /data/local/tmp/shizuku_start.sh'
+
+# Executar (em background)
+adb -s 100.112.7.26:<PORTA> shell 'sh /data/local/tmp/shizuku_start.sh' &
+
+# Verificar se subiu
+adb -s 100.112.7.26:<PORTA> shell 'ps -A | grep shizuku_server'
+```
+
+### 10.3 Testar via rish (shell Shizuku)
+
+```bash
+# Extrair rish do APK
+unzip -o /tmp/shizuku.apk assets/rish assets/rish_shizuku.dex -d /tmp/shizuku_rish/
+
+# Enviar para o device
+adb push /tmp/shizuku_rish/assets/rish /data/local/tmp/rish
+adb push /tmp/shizuku_rish/assets/rish_shizuku.dex /data/local/tmp/rish_shizuku.dex
+adb shell 'chmod 755 /data/local/tmp/rish && chmod 400 /data/local/tmp/rish_shizuku.dex'
+
+# Testar (deve retornar uid=shell com grupos elevados)
+adb shell 'RISH_APPLICATION_ID=moe.shizuku.privileged.api sh /data/local/tmp/rish -c "id"'
+```
+
+### 10.4 Auto-start no boot (via Termux:Boot)
+
+```bash
+# No Termux:
+mkdir -p ~/.termux/boot
+
+cat > ~/scripts/start-shizuku.sh << 'EOF'
+#!/data/data/com.termux/files/usr/bin/bash
+sleep 10
+pgrep -f shizuku_server > /dev/null && exit 0
+sh /data/local/tmp/shizuku_start.sh
+EOF
+chmod +x ~/scripts/start-shizuku.sh
+
+cat > ~/.termux/boot/start-shizuku.sh << 'EOF'
+#!/data/data/com.termux/files/usr/bin/bash
+sleep 10
+bash ~/scripts/start-shizuku.sh
+EOF
+chmod +x ~/.termux/boot/start-shizuku.sh
+```
+
+### 10.5 Instalar Termux:Boot
+
+> ⚠️ Usar APK do **F-Droid** (mesma assinatura do Termux instalado). A versão GitHub debug não é compatível.
+
+```bash
+wget -O /tmp/termux-boot-fdroid.apk "https://f-droid.org/repo/com.termux.boot_7.apk"
+adb -s 100.112.7.26:<PORTA> install -r /tmp/termux-boot-fdroid.apk
+```
+
+---
+
+## 11. Referências
 
 - [ADB Wireless Debugging — Android Developers](https://developer.android.com/tools/adb#wireless-android11-command-line)
 - [TaskerHealthConnect — GitHub](https://github.com/RafhaanShah/TaskerHealthConnect)
@@ -358,6 +443,7 @@ adb devices
 | 2026-02-25 | Setup inicial — ADB Wireless + permissões + pipeline Watch 7 → n8n |
 | 2026-02-25 | Atualização — porta ADB `44007`, usuário SSH `u0a454`, alias `ssh-celular` |
 | 2026-02-25 | Reinstalação completa — setup Termux (git, jq, python, nodejs, tmux, vim, termux-api), termux-services para sshd, fix MANAGE_EXTERNAL_STORAGE (manual no Android 16) |
+| 2026-02-25 | Shizuku v13.6.0 instalado — servidor via app_process, rish testado, auto-start via Termux:Boot |
 
 ---
 
