@@ -426,7 +426,103 @@ adb -s 100.112.7.26:<PORTA> install -r /tmp/termux-boot-fdroid.apk
 
 ---
 
-## 11. Referências
+## 11. Tasker — Configuração das Tasks
+
+Os arquivos XML das tasks ficam em `scripts/tasker/` no repositório e devem ser importados no Tasker.
+
+### 11.1 Arquivos disponíveis
+
+| Arquivo | Task ID | Função |
+|---|---|---|
+| `nexus_health.tsk.xml` | 100 | Lê Health Connect → monta payload → POST n8n |
+| `nexus_boot.tsk.xml` | 101 | Notifica Telegram no boot (IP + bateria) |
+| `nexus_battery.tsk.xml` | 102 | Alerta Telegram quando bateria < 20% |
+
+### 11.2 Importar no Tasker
+
+```bash
+# Enviar XMLs para o celular (PC → celular)
+adb push scripts/tasker/nexus_health.tsk.xml /sdcard/Tasker/tasks/
+adb push scripts/tasker/nexus_boot.tsk.xml /sdcard/Tasker/tasks/
+adb push scripts/tasker/nexus_battery.tsk.xml /sdcard/Tasker/tasks/
+```
+
+No Tasker:
+1. Aba **Tasks** → Menu (⋮) → **Import** → selecionar cada arquivo em `/sdcard/Tasker/tasks/`
+2. Aba **Profiles** → importar os perfis dos mesmos arquivos
+
+### 11.3 Configurar variável `%WEBHOOK_URL`
+
+No Tasker:
+1. Ícone de globo (Vars) → **Add** → Nome: `WEBHOOK_URL`
+2. Valor: `https://n8n.staging.opsnx.com.br/webhook/nexus-health`
+
+### 11.4 Perfis configurados
+
+| Profile | Trigger | Task |
+|---|---|---|
+| Nexus Saúde Diário | 08:00 diário | Nexus Health Ler (ID 100) |
+| Nexus Boot | Boot completo | Nexus Boot (ID 101) |
+| Nexus Battery Alert | Bateria < 20% | Nexus Battery Alert (ID 102) |
+
+### 11.5 Workflow da Task de Saúde
+
+```
+act0: JS — calcula start_ms (ontem 00:00) e end_ms (agora) em epoch ms
+act1: Plugin — lê StepsRecord (TaskerHealthConnect)
+act2: JS — salva em %steps_raw
+act3: Plugin — lê HeartRateRecord
+act4: JS — salva em %hr_raw
+act5: Plugin — lê HeartRateVariabilityRmssdRecord
+act6: JS — salva em %hrv_raw
+act7: Plugin — lê SleepSessionRecord
+act8: JS — salva em %sleep_raw
+act9: Plugin — lê OxygenSaturationRecord
+act10: JS — salva em %spo2_raw
+act11: JS — agrega todos, aplica workaround Android 16, monta JSON payload
+act12: Shell — salva payload em /sdcard/nexus_health_data.json (fallback)
+act13: JS (Java interop) — POST payload para %WEBHOOK_URL via HttpURLConnection
+```
+
+---
+
+## 12. n8n — Webhook de Saúde
+
+### Workflow criado: "🏃 Nexus Health - Watch 7 Pipeline"
+
+- **URL Produção:** `https://n8n.staging.opsnx.com.br/webhook/nexus-health`
+- **Método:** POST
+- **Content-Type:** `application/json`
+- **ID n8n:** `5fg84kOVmnGicgUo`
+
+### Payload esperado
+
+```json
+{
+  "source": "galaxy_watch_7",
+  "timestamp": "2026-02-25T08:00:00.000Z",
+  "heart_rate": 82,
+  "heart_rate_avg": 68,
+  "steps": 8432,
+  "hrv": 45.2,
+  "sleep_minutes": 420,
+  "sleep_hours": 7.0,
+  "spo2": 98.0,
+  "device": "Samsung A34 + Watch 7"
+}
+```
+
+### Pipeline n8n
+
+```
+Webhook POST → Formatar Dados (JS) → Telegram Adriano → Resposta OK
+```
+
+O Telegram envia relatório formatado com emojis de status (✅/⚠️/❌) baseado nos valores.
+
+---
+
+## 13. Referências
 
 - [ADB Wireless Debugging — Android Developers](https://developer.android.com/tools/adb#wireless-android11-command-line)
 - [TaskerHealthConnect — GitHub](https://github.com/RafhaanShah/TaskerHealthConnect)
@@ -444,6 +540,8 @@ adb -s 100.112.7.26:<PORTA> install -r /tmp/termux-boot-fdroid.apk
 | 2026-02-25 | Atualização — porta ADB `44007`, usuário SSH `u0a454`, alias `ssh-celular` |
 | 2026-02-25 | Reinstalação completa — setup Termux (git, jq, python, nodejs, tmux, vim, termux-api), termux-services para sshd, fix MANAGE_EXTERNAL_STORAGE (manual no Android 16) |
 | 2026-02-25 | Shizuku v13.6.0 instalado — servidor via app_process, rish testado, auto-start via Termux:Boot |
+| 2026-02-25 | n8n webhook criado — "🏃 Nexus Health - Watch 7 Pipeline" em `n8n.staging.opsnx.com.br/webhook/nexus-health` |
+| 2026-02-25 | Tasks Tasker criadas — nexus_health (ID 100 + act13 HTTP POST), nexus_boot (ID 101), nexus_battery (ID 102) |
 
 ---
 

@@ -1,0 +1,211 @@
+<TaskerData sr="" dvi="1" tv="6.6.19">
+ <Task sr="task100">
+  <cdate>1740484800000</cdate>
+  <edate>1740484800000</edate>
+  <id>100</id>
+  <nme>Nexus Health Ler</nme>
+  <pri>100</pri>
+  <Action sr="act0" ve="7">
+   <code>129</code>
+   <Str sr="arg0" ve="3">var now = Date.now(); var yesterday = now - (24 * 60 * 60 * 1000); setLocal('end_ms', String(now)); setLocal('start_ms', String(yesterday)); flash('Nexus Health: start=' + String(yesterday) + ' end=' + String(now));</Str>
+   <Str sr="arg1" ve="3"></Str>
+   <Str sr="arg2" ve="3">end_ms,start_ms</Str>
+   <Int sr="arg3" val="0"/>
+   <Int sr="arg4" val="1"/>
+  </Action>
+  <Action sr="act1" ve="7">
+   <code>380</code>
+   <Bundle sr="arg0">
+    <Str sr="key0" ve="3">recordType</Str>
+    <Str sr="val0" ve="3">StepsRecord</Str>
+    <Str sr="key1" ve="3">startTime</Str>
+    <Str sr="val1" ve="3">%start_ms</Str>
+    <Str sr="key2" ve="3">endTime</Str>
+    <Str sr="val2" ve="3">%end_ms</Str>
+    <Str sr="key3" ve="3">net.dinglisch.android.tasker.extra.VARIABLE_REPLACE_KEYS</Str>
+    <Str sr="val3" ve="3">startTime endTime</Str>
+   </Bundle>
+   <Str sr="arg1" ve="3">com.rafapps.taskerhealthconnect.read.ReadDataActivity</Str>
+   <Str sr="arg2" ve="3">net.dinglisch.android.taskerm</Str>
+  </Action>
+  <Action sr="act2" ve="7">
+   <code>129</code>
+   <Str sr="arg0" ve="3">var r = '%healthconnectresult'; setLocal('steps_raw', r); flash('Steps raw: ' + r.substring(0, 80));</Str>
+   <Str sr="arg1" ve="3"></Str>
+   <Str sr="arg2" ve="3">steps_raw</Str>
+   <Int sr="arg3" val="0"/>
+   <Int sr="arg4" val="1"/>
+  </Action>
+  <Action sr="act3" ve="7">
+   <code>380</code>
+   <Bundle sr="arg0">
+    <Str sr="key0" ve="3">recordType</Str>
+    <Str sr="val0" ve="3">HeartRateRecord</Str>
+    <Str sr="key1" ve="3">startTime</Str>
+    <Str sr="val1" ve="3">%start_ms</Str>
+    <Str sr="key2" ve="3">endTime</Str>
+    <Str sr="val2" ve="3">%end_ms</Str>
+    <Str sr="key3" ve="3">net.dinglisch.android.tasker.extra.VARIABLE_REPLACE_KEYS</Str>
+    <Str sr="val3" ve="3">startTime endTime</Str>
+   </Bundle>
+   <Str sr="arg1" ve="3">com.rafapps.taskerhealthconnect.read.ReadDataActivity</Str>
+   <Str sr="arg2" ve="3">net.dinglisch.android.taskerm</Str>
+  </Action>
+  <Action sr="act4" ve="7">
+   <code>129</code>
+   <Str sr="arg0" ve="3">var r = '%healthconnectresult'; setLocal('hr_raw', r); flash('HR raw: ' + r.substring(0, 80));</Str>
+   <Str sr="arg1" ve="3"></Str>
+   <Str sr="arg2" ve="3">hr_raw</Str>
+   <Int sr="arg3" val="0"/>
+   <Int sr="arg4" val="1"/>
+  </Action>
+  <Action sr="act5" ve="7">
+   <code>380</code>
+   <Bundle sr="arg0">
+    <Str sr="key0" ve="3">recordType</Str>
+    <Str sr="val0" ve="3">HeartRateVariabilityRmssdRecord</Str>
+    <Str sr="key1" ve="3">startTime</Str>
+    <Str sr="val1" ve="3">%start_ms</Str>
+    <Str sr="key2" ve="3">endTime</Str>
+    <Str sr="val2" ve="3">%end_ms</Str>
+    <Str sr="key3" ve="3">net.dinglisch.android.tasker.extra.VARIABLE_REPLACE_KEYS</Str>
+    <Str sr="val3" ve="3">startTime endTime</Str>
+   </Bundle>
+   <Str sr="arg1" ve="3">com.rafapps.taskerhealthconnect.read.ReadDataActivity</Str>
+   <Str sr="arg2" ve="3">net.dinglisch.android.taskerm</Str>
+  </Action>
+  <Action sr="act6" ve="7">
+   <code>129</code>
+   <Str sr="arg0" ve="3">setLocal('hrv_raw', '%healthconnectresult');</Str>
+   <Str sr="arg1" ve="3"></Str>
+   <Str sr="arg2" ve="3">hrv_raw</Str>
+   <Int sr="arg3" val="0"/>
+   <Int sr="arg4" val="1"/>
+  </Action>
+  <Action sr="act7" ve="7">
+   <code>380</code>
+   <Bundle sr="arg0">
+    <Str sr="key0" ve="3">recordType</Str>
+    <Str sr="val0" ve="3">SleepSessionRecord</Str>
+    <Str sr="key1" ve="3">startTime</Str>
+    <Str sr="val1" ve="3">%start_ms</Str>
+    <Str sr="key2" ve="3">endTime</Str>
+    <Str sr="val2" ve="3">%end_ms</Str>
+    <Str sr="key3" ve="3">net.dinglisch.android.tasker.extra.VARIABLE_REPLACE_KEYS</Str>
+    <Str sr="val3" ve="3">startTime endTime</Str>
+   </Bundle>
+   <Str sr="arg1" ve="3">com.rafapps.taskerhealthconnect.read.ReadDataActivity</Str>
+   <Str sr="arg2" ve="3">net.dinglisch.android.taskerm</Str>
+  </Action>
+  <Action sr="act8" ve="7">
+   <code>129</code>
+   <Str sr="arg0" ve="3">setLocal('sleep_raw', '%healthconnectresult');</Str>
+   <Str sr="arg1" ve="3"></Str>
+   <Str sr="arg2" ve="3">sleep_raw</Str>
+   <Int sr="arg3" val="0"/>
+   <Int sr="arg4" val="1"/>
+  </Action>
+  <Action sr="act9" ve="7">
+   <code>380</code>
+   <Bundle sr="arg0">
+    <Str sr="key0" ve="3">recordType</Str>
+    <Str sr="val0" ve="3">OxygenSaturationRecord</Str>
+    <Str sr="key1" ve="3">startTime</Str>
+    <Str sr="val1" ve="3">%start_ms</Str>
+    <Str sr="key2" ve="3">endTime</Str>
+    <Str sr="val2" ve="3">%end_ms</Str>
+    <Str sr="key3" ve="3">net.dinglisch.android.tasker.extra.VARIABLE_REPLACE_KEYS</Str>
+    <Str sr="val3" ve="3">startTime endTime</Str>
+   </Bundle>
+   <Str sr="arg1" ve="3">com.rafapps.taskerhealthconnect.read.ReadDataActivity</Str>
+   <Str sr="arg2" ve="3">net.dinglisch.android.taskerm</Str>
+  </Action>
+  <Action sr="act10" ve="7">
+   <code>129</code>
+   <Str sr="arg0" ve="3">setLocal('spo2_raw', '%healthconnectresult');</Str>
+   <Str sr="arg1" ve="3"></Str>
+   <Str sr="arg2" ve="3">spo2_raw</Str>
+   <Int sr="arg3" val="0"/>
+   <Int sr="arg4" val="1"/>
+  </Action>
+  <Action sr="act11" ve="7">
+   <code>129</code>
+   <Str sr="arg0" ve="3">
+function sp(raw){try{return JSON.parse(raw||'{}');}catch(e){return{};}}
+var sd=sp('%steps_raw'); var steps=0;
+if(sd.records){sd.records.forEach(function(r){steps+=(r.count||0);});}
+var hd=sp('%hr_raw'); var bpm=0,avgBpm=0,cnt=0;
+if(hd.records){hd.records.forEach(function(r){if(r.samples){r.samples.forEach(function(s){bpm=s.beatsPerMinute||bpm;avgBpm+=s.beatsPerMinute||0;cnt++;});}});}
+if(cnt>0)avgBpm=Math.round(avgBpm/cnt);
+var hvd=sp('%hrv_raw'); var hrv=0;
+if(hvd.records&amp;&amp;hvd.records.length>0){hrv=Math.round((hvd.records[hvd.records.length-1].heartRateVariabilityMillis||0)*10)/10;}
+var sld=sp('%sleep_raw'); var sleepMin=0;
+if(sld.records){sld.records.forEach(function(r){if(r.startTime&amp;&amp;r.endTime){sleepMin+=Math.round((new Date(r.endTime)-new Date(r.startTime))/60000);}});}
+var od=sp('%spo2_raw'); var spo2=0;
+if(od.records&amp;&amp;od.records.length>0){spo2=Math.round((od.records[od.records.length-1].percentage||0)*100)/100;}
+var payload=JSON.stringify({source:'galaxy_watch_7',timestamp:new Date().toISOString(),heart_rate:bpm,heart_rate_avg:avgBpm,steps:steps,hrv:hrv,sleep_minutes:sleepMin,sleep_hours:Math.round(sleepMin/6)/10,spo2:spo2,device:'Samsung A34 + Watch 7'});
+setLocal('health_payload',payload);
+writeFile('/sdcard/nexus_health_data.json', payload, false);
+flash('Nexus Health SALVO! steps=' + steps + ' hr=' + bpm + ' hrv=' + hrv);
+   </Str>
+   <Str sr="arg1" ve="3"></Str>
+   <Str sr="arg2" ve="3">health_payload</Str>
+   <Int sr="arg3" val="0"/>
+   <Int sr="arg4" val="1"/>
+  </Action>
+  <Action sr="act12" ve="7">
+   <code>123</code>
+   <Str sr="arg0" ve="3">echo '%health_payload' > /sdcard/nexus_health_data.json</Str>
+   <Int sr="arg1" val="0"/>
+   <Str sr="arg2" ve="3"></Str>
+   <Int sr="arg3" val="0"/>
+   <Int sr="arg4" val="45"/>
+  </Action>
+  <Action sr="act13" ve="7">
+   <code>129</code>
+   <Str sr="arg0" ve="3">try {
+var wurl = global('WEBHOOK_URL');
+var payload = local('health_payload');
+var url = new java.net.URL(wurl);
+var conn = url.openConnection();
+conn.setRequestMethod('POST');
+conn.setDoOutput(true);
+conn.setRequestProperty('Content-Type', 'application/json');
+conn.setConnectTimeout(10000);
+conn.setReadTimeout(15000);
+var bytes = new java.lang.String(payload).getBytes('UTF-8');
+conn.setFixedLengthStreamingMode(bytes.length);
+conn.connect();
+var os = conn.getOutputStream();
+os.write(bytes);
+os.close();
+var code = conn.getResponseCode();
+conn.disconnect();
+flash('Health n8n OK! HTTP ' + code);
+setLocal('webhook_status', String(code));
+} catch(e) {
+flash('ERRO webhook: ' + e.message);
+setLocal('webhook_status', 'erro');
+}</Str>
+   <Str sr="arg1" ve="3"></Str>
+   <Str sr="arg2" ve="3">webhook_status</Str>
+   <Int sr="arg3" val="0"/>
+   <Int sr="arg4" val="1"/>
+  </Action>
+ </Task>
+ <Profile sr="prof100" ve="2">
+  <cdate>1740484800000</cdate>
+  <edate>1740484800000</edate>
+  <flags>10</flags>
+  <id>100</id>
+  <mid0>100</mid0>
+  <nme>Nexus Saúde Diário</nme>
+  <Time sr="ConditionTimer">
+   <fh>8</fh>
+   <fm>0</fm>
+   <th>8</th>
+   <tm>1</tm>
+   <rep>true</rep>
+  </Time>
+ </Profile>
+</TaskerData>
