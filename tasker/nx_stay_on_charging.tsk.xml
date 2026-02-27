@@ -1,0 +1,29 @@
+<TaskerData sr="" dvi="1" tv="6.6.19">
+ <Task sr="task920">
+  <cdate>1740700000000</cdate>
+  <id>920</id>
+  <nme>NX Stay On Charging</nme>
+  <pri>100</pri>
+
+  <!-- Mantém tela ligada enquanto carregando (AC=1, USB=2, Wireless=4, All=7) -->
+  <!-- Requer: Tasker com android.permission.WRITE_SECURE_SETTINGS concedida via ADB -->
+  <!-- pm grant net.dinglisch.android.taskerm android.permission.WRITE_SECURE_SETTINGS -->
+  <Action sr="act0" ve="7">
+   <code>123</code>
+   <Str sr="arg0" ve="3">settings put global stay_on_while_plugged_in 7</Str>
+   <Int sr="arg1" val="0"/>
+   <Str sr="arg2" ve="3"></Str>
+   <Int sr="arg3" val="0"/>
+  </Action>
+
+  <!-- Notificação Telegram confirmando aplicação -->
+  <Action sr="act1" ve="7">
+   <code>123</code>
+   <Str sr="arg0" ve="3">curl -s -X POST "https://api.telegram.org/bot%TELEGRAM_BOT_TOKEN%/sendMessage" -d chat_id="%TELEGRAM_CHAT_ID%" -d parse_mode="Markdown" -d text="📱 *Nexus Android*%0aTela sempre ligada no carregador ✅%0astay_on_while_plugged_in = 7 (AC+USB+Wireless)"</Str>
+   <Int sr="arg1" val="0"/>
+   <Str sr="arg2" ve="3"></Str>
+   <Int sr="arg3" val="0"/>
+  </Action>
+
+ </Task>
+</TaskerData>
