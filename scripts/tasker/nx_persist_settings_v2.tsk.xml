@@ -49,7 +49,7 @@
    <code>235</code>
    <Int sr="arg0" val="0"/>
    <Str sr="arg1" ve="3">protect_battery</Str>
-   <Str sr="arg2" ve="3">4</Str>
+   <Str sr="arg2" ve="3">2</Str>
    <Int sr="arg3" val="0"/>
    <Str sr="arg4" ve="3"></Str>
   </Action>
