@@ -5,8 +5,8 @@
 # NOTA: A porta ADB pode mudar a cada reboot.
 # Se falhar, verificar em: Configurações → Opções do desenvolvedor → Depuração sem fio
 
-CELULAR_IP="${1:-100.112.7.26}"
-CELULAR_PORT="${2:-44007}"
+CELULAR_IP="${1:-100.109.120.68}"
+CELULAR_PORT="${2:-37543}"
 
 echo "Conectando ao celular ($CELULAR_IP:$CELULAR_PORT)..."
 adb connect "$CELULAR_IP:$CELULAR_PORT"

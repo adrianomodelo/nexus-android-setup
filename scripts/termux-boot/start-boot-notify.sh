@@ -10,13 +10,13 @@ UPTIME=$(uptime 2>/dev/null | sed 's/.*up /up /' | sed 's/,.*//' || echo 'N/A')
 BATTERY=$(termux-battery-status 2>/dev/null | grep '"percentage"' | grep -o '[0-9]*' || echo '?')
 
 # Tailscale: verificar se responde via ping
-if ping -c 1 -W 3 100.112.7.26 >/dev/null 2>&1; then
-  TAILSCALE="100.112.7.26 (UP)"
+if ping -c 1 -W 3 100.109.120.68 >/dev/null 2>&1; then
+  TAILSCALE="100.109.120.68 (UP)"
 else
   # Retry após mais 30s
   sleep 30
-  if ping -c 1 -W 3 100.112.7.26 >/dev/null 2>&1; then
-    TAILSCALE="100.112.7.26 (UP - delayed)"
+  if ping -c 1 -W 3 100.109.120.68 >/dev/null 2>&1; then
+    TAILSCALE="100.109.120.68 (UP - delayed)"
   else
     TAILSCALE="DOWN"
   fi

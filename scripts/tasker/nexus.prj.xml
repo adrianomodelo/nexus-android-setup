@@ -261,7 +261,7 @@ setLocal('webhook_status', 'erro');
    <code>129</code>
    <Str sr="arg0" ve="3">try {
 var bat = '%bat_level'.trim() || '?';
-var ip = '100.112.7.26';
+var ip = '100.109.120.68';
 var msg = '📱 *Samsung A34 — Boot Completo*\n\n✅ Sistema inicializado\n🔋 Bateria: *' + bat + '%*\n🌐 IP Tailscale: ' + ip + '\n\n⚠️ *Porta ADB mudou!*\nVer porta em: Settings → Developer → Wireless debugging';
 var tgToken = '7580573651:AAGL1_pjvFQKlc9jCs2dVy2CdZ5E9_7QSsU';
 var chatId = '5504780869';

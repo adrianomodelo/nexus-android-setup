@@ -3,7 +3,7 @@
 # Executar APÓS conectar via: ./adb-connect-celular.sh
 #
 # Uso: ./grant-permissions.sh [IP:PORTA]
-# Exemplo: ./grant-permissions.sh 100.112.7.26:44007
+# Exemplo: ./grant-permissions.sh 100.109.120.68:44007
 #
 # ⚠️  MANAGE_EXTERNAL_STORAGE (Termux) NÃO pode ser concedida via ADB no Android 16.
 #     Conceder manualmente: Configurações → Apps → Termux → Permissões →

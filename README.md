@@ -76,14 +76,14 @@ adb version  # Android Debug Bridge version 1.0.41+
 ```bash
 adb pair <IP_CELULAR>:<PORTA_PAIRING> <CODIGO_6_DIGITOS>
 # Exemplo:
-adb pair 100.112.7.26:33417 518212
+adb pair 100.109.120.68:33417 518212
 ```
 
 ### 2.2 Conectar
 ```bash
 adb connect <IP_CELULAR>:<PORTA_PRINCIPAL>
 # Exemplo:
-adb connect 100.112.7.26:44007
+adb connect 100.109.120.68:44007
 ```
 
 ### 2.3 Verificar conexão
@@ -196,7 +196,7 @@ sshd  # inicia servidor SSH na porta 8022
 
 # Copiar chave pública do PC:
 # No PC:
-ssh-copy-id -p 8022 -i ~/.ssh/id_rsa 100.112.7.26
+ssh-copy-id -p 8022 -i ~/.ssh/id_rsa 100.109.120.68
 # OU
 adb shell "mkdir -p /data/data/com.termux/files/home/.ssh"
 cat ~/.ssh/id_rsa.pub | adb shell "cat >> /data/data/com.termux/files/home/.ssh/authorized_keys"
@@ -204,13 +204,13 @@ cat ~/.ssh/id_rsa.pub | adb shell "cat >> /data/data/com.termux/files/home/.ssh/
 
 ### 4.2 Conectar ao Termux via SSH
 ```bash
-ssh -p 8022 -i ~/.ssh/id_rsa -o IdentitiesOnly=yes u0a454@100.112.7.26
+ssh -p 8022 -i ~/.ssh/id_rsa -o IdentitiesOnly=yes u0a454@100.109.120.68
 
 # Ou via alias (~/.ssh/config):
 ssh ssh-celular
 ```
 
-- **IP Tailscale do celular:** `100.112.7.26`
+- **IP Tailscale do celular:** `100.109.120.68`
 - **Porta Termux SSH:** `8022`
 - **Usuário:** `u0a454`
 - **Alias:** `ssh-celular` (configurar em `~/.ssh/config`)
@@ -327,7 +327,7 @@ Salvar como `~/workspace/scripts/adb-connect-celular.sh`:
 ```bash
 #!/bin/bash
 # Reconecta ADB ao celular via Tailscale
-CELULAR_IP="100.112.7.26"
+CELULAR_IP="100.109.120.68"
 CELULAR_PORT="44007"
 
 echo "Conectando ao celular ($CELULAR_IP:$CELULAR_PORT)..."
@@ -355,14 +355,14 @@ Shizuku permite que apps obtenham permissões equivalentes ao ADB (muito além d
 wget -O /tmp/shizuku.apk https://github.com/RikkaApps/Shizuku/releases/latest/download/shizuku-*.apk
 
 # Instalar via ADB
-adb -s 100.112.7.26:<PORTA> install -r /tmp/shizuku.apk
+adb -s 100.109.120.68:<PORTA> install -r /tmp/shizuku.apk
 ```
 
 ### 10.2 Iniciar servidor Shizuku
 
 ```bash
 # Gerar script de start manualmente
-adb -s 100.112.7.26:<PORTA> shell '
+adb -s 100.109.120.68:<PORTA> shell '
 APK=$(pm path moe.shizuku.privileged.api | sed "s/package://")
 cat > /data/local/tmp/shizuku_start.sh << EOF
 #!/system/bin/sh
@@ -372,10 +372,10 @@ EOF
 chmod 755 /data/local/tmp/shizuku_start.sh'
 
 # Executar (em background)
-adb -s 100.112.7.26:<PORTA> shell 'sh /data/local/tmp/shizuku_start.sh' &
+adb -s 100.109.120.68:<PORTA> shell 'sh /data/local/tmp/shizuku_start.sh' &
 
 # Verificar se subiu
-adb -s 100.112.7.26:<PORTA> shell 'ps -A | grep shizuku_server'
+adb -s 100.109.120.68:<PORTA> shell 'ps -A | grep shizuku_server'
 ```
 
 ### 10.3 Testar via rish (shell Shizuku)
@@ -421,7 +421,7 @@ chmod +x ~/.termux/boot/start-shizuku.sh
 
 ```bash
 wget -O /tmp/termux-boot-fdroid.apk "https://f-droid.org/repo/com.termux.boot_7.apk"
-adb -s 100.112.7.26:<PORTA> install -r /tmp/termux-boot-fdroid.apk
+adb -s 100.109.120.68:<PORTA> install -r /tmp/termux-boot-fdroid.apk
 ```
 
 ---
